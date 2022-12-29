@@ -1,4 +1,5 @@
 html, body {
+    background-color: #e2e2e2;
     margin: 0;
     padding: 0;
     font-family: 'Source Sans Pro';
@@ -19,6 +20,7 @@ html, body {
 }
 
 .container {
+    background-color: white;
     width: 720px;
     margin: 0 auto;
 }
