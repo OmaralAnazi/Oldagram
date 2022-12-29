@@ -118,6 +118,7 @@ function getCommentTags(userComments) {
     return commentTags
 }
 
+// This function uses the DOM on each click to get the likes TEXT, it better to modify
 function updateLikes(postIndex) {
     let isPressedBefore = getLikeState(postIndex)
     if (! isPressedBefore)
@@ -125,7 +126,7 @@ function updateLikes(postIndex) {
     else 
         posts[postIndex].likes--
     
-    changeLikeState(postIndex, isPressedBefore)
+    changeLikeState(postIndex)
     likesElement = document.getElementById(`post${postIndex}-likes`)
     likesElement.textContent = `${posts[postIndex].likes.toLocaleString("en-US")} likes`
     runLikeBtnAnimation(postIndex)
@@ -136,7 +137,8 @@ function getLikeState(postIndex) {
     return userLikeStates[postIndex]
 }
 
-function changeLikeState(postIndex, isPressedBefore) {
+// This function uses the DOM on each click to get the likes ICON, it better to modify
+function changeLikeState(postIndex) {
     let likesIcon = document.getElementById(`post${postIndex}-likes-icon`)
 
     userLikeStates[postIndex] = ! userLikeStates[postIndex]
