@@ -1,11 +1,12 @@
 const postsHolder = document.getElementById("posts-holder")
-const posts = [
+let posts = [
     {
         name: "Vincent van Gogh",
         location: "Zundert, Netherlands",
         avatar: "images/avatar-vangogh.jpg",
         postImg: "images/post-vangogh.jpg",
         likes: 21492,
+        likeIcon: "images/icon-heart.png",
         userComments: [
             {
                 username: "vincey1853",
@@ -19,6 +20,7 @@ const posts = [
         avatar: "images/user-avatar.png",
         postImg: "images/user-avatar.png",
         likes: 3872312,
+        likeIcon: "images/icon-heart.png",
         userComments: [
             {
                 username: "OmarAlanazi_IS",
@@ -32,6 +34,7 @@ const posts = [
         avatar: "images/avatar-courbet.jpg",
         postImg: "images/post-courbet.jpg",
         likes: 12502,
+        likeIcon: "images/icon-heart.png",
         userComments: [
             {
                 username: "gus1819",
@@ -45,6 +48,7 @@ const posts = [
         avatar: "images/avatar-ducreux.jpg",
         postImg: "images/post-ducreux.jpg",
         likes: 15137,
+        likeIcon: "images/icon-heart.png",
         userComments: [
             {
                 username: "jd1735",
@@ -55,7 +59,22 @@ const posts = [
 ]
 let userLikeStates = new Array(posts.length).fill(false)
 
+getDataFromLocalStorage()
 renderPosts()
+
+function getDataFromLocalStorage() {
+    let postsArray = localStorage.getItem("posts") 
+    let likesArray = localStorage.getItem("likes") 
+    if(postsArray) 
+        posts = JSON.parse(postsArray) 
+    if(likesArray) 
+        userLikeStates = JSON.parse(likesArray) 
+}
+
+function updateDataToLocalStorage() {
+    localStorage.setItem("posts", JSON.stringify(posts)) 
+    localStorage.setItem("likes", JSON.stringify(userLikeStates))   
+}
 
 function renderPosts() {
     postsHTML = ""
@@ -75,7 +94,7 @@ function renderPosts() {
                 <img class="post-img" src="${post.postImg}" alt="${post.name} post">
 
                 <div class="post-icons">
-                    <img class="icon-img" src="images/icon-heart.png" alt="like icon" onclick="updateLikes(${index})" id="post${index}-likes-icon">
+                    <img class="icon-img" src="${post.likeIcon}" alt="like icon" onclick="updateLikes(${index})" id="post${index}-likes-icon">
                     <img class="icon-img" src="images/icon-comment.png" alt="comment icon">
                     <img class="icon-img" src="images/icon-dm.png" alt="share icon">
                 </div>
@@ -110,6 +129,7 @@ function updateLikes(postIndex) {
     likesElement = document.getElementById(`post${postIndex}-likes`)
     likesElement.textContent = `${posts[postIndex].likes.toLocaleString("en-US")} likes`
     runLikeBtnAnimation(postIndex)
+    updateDataToLocalStorage()
 }
 
 function getLikeState(postIndex) {
@@ -122,9 +142,10 @@ function changeLikeState(postIndex, isPressedBefore) {
     userLikeStates[postIndex] = ! userLikeStates[postIndex]
     let isLiked = userLikeStates[postIndex]
     if (isLiked)
-        likesIcon.src = "images/icon-heart-liked.png"
+        posts[postIndex].likeIcon = "images/icon-heart-liked.png"
     else 
-        likesIcon.src = "images/icon-heart.png"
+        posts[postIndex].likeIcon = "images/icon-heart.png"
+    likesIcon.src = posts[postIndex].likeIcon
 }
 
 function runLikeBtnAnimation(postIndex) {
